@@ -16,7 +16,7 @@ class HuffmanBitWriter:
             self.file.write(struct.pack('B', self.byte)) 
         self.file.close()
       
-    # Use this method to write the header to the compressed file. 
+    ## Use this method to write the header to the compressed file.
     def write_str(self, str): # str is a string
         self.file.write(str.encode('utf-8'))
    
