@@ -1,4 +1,3 @@
-
 class Node:
     '''Node for use with doubly-linked list'''
     def __init__(self, item):
@@ -14,6 +13,8 @@ class OrderedList:
            ***No other attributes***
            DO NOT have an attribute to keep track of size'''
         self.dummy = Node(None)
+        self.dummy.prev = self.dummy
+
 
     def is_empty(self):
         '''Returns True if OrderedList is empty
@@ -27,32 +28,37 @@ class OrderedList:
            MUST have O(n) average-case performance'''
         node = Node(item)
         ref = self.dummy
-        #gonna temporarily coment out duplicate code
-        """
         while ref is not None:
             if ref.item == item:
                 return False
             ref = ref.next
-        """
+
         if self.is_empty(): #empty base case
             node.prev = self.dummy.prev
             self.dummy.next = node
             self.dummy.prev = node
             return True
-        elif node.item < self.dummy.next.item: #less
+
+        elif self.dummy.next.item > node.item: #less
             node.next = self.dummy.next
             node.next.prev = node
             self.dummy.next = node
             return True
+
         else:
             ref = self.dummy.next
-            while ref.next != None and ref.next.item < node.item:
+            while ref.next != None and node.item > ref.next.item:
                 ref = ref.next
+
             node.next = ref.next
+
             if ref.next != None:
                 node.next.prev = node
+
             ref.next = node
             node.prev = ref
+
+
             x = self.dummy
             while x.next != None: #this just fixes the tail
                 self.dummy.prev = x.next
@@ -103,7 +109,6 @@ class OrderedList:
         '''Returns index of the first occurrence of an item in OrderedList (assuming head of list is index 0).
            If item is not in list, return None
            MUST have O(n) average-case performance'''
-        """
         count = 0
         x = None
         ref = self.dummy.next
@@ -115,20 +120,8 @@ class OrderedList:
 
         if self.dummy.prev.item == item:
             x = count
-        return x
-        """
 
-        node = self.dummy.next
-        index = 0
-        if item == None:
-            return None
-        while node.item != item and node.item:
-            index += 1
-            node = node.next
-        if node.item == item:
-            return index
-        if node.item:
-            return None
+        return x
 
     def pop(self, index):
         '''Removes and returns item at index (assuming head of list is index 0).
@@ -178,12 +171,19 @@ class OrderedList:
         return x[1:]
 
     def list_helper(self, node, x):
-
+        """
         if node == None:
             return x
         else:
             x.append(node.item)
             return self.list_helper(node.prev, x)
+        """
+        if node.item is None:
+            return x
+        else:
+            x.append(node.item)
+            return self.list_helper(node.prev, x)
+
 
 
     def python_list_reversed(self):
@@ -209,6 +209,4 @@ class OrderedList:
            MUST have O(n) performance'''
         count = 0
         return self.size_helper(self.dummy.next, count)
-
-
 
