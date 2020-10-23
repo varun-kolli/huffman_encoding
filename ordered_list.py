@@ -13,7 +13,6 @@ class OrderedList:
            ***No other attributes***
            DO NOT have an attribute to keep track of size'''
         self.dummy = Node(None)
-        self.dummy.prev = self.dummy
 
 
     def is_empty(self):
@@ -178,12 +177,11 @@ class OrderedList:
             x.append(node.item)
             return self.list_helper(node.prev, x)
         """
-        if node.item is None:
+        if not node:
             return x
         else:
             x.append(node.item)
             return self.list_helper(node.prev, x)
-
 
 
     def python_list_reversed(self):
