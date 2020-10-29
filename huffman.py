@@ -46,8 +46,6 @@ def cnt_freq(filename):
     f.close()
     return l
 
-
-
 def create_huff_tree(char_freq):
     '''Create a Huffman tree for characters with non-zero frequency
     Returns the root node of the Huffman tree'''
@@ -72,8 +70,6 @@ def create_huff_tree(char_freq):
         l.add(internal)
     return l.pop(0)
 
-
-
 def inorder_helper(node, l, count):
     if node is not None:
         inorder_helper(node.left, l, count + "0")
@@ -81,7 +77,6 @@ def inorder_helper(node, l, count):
         if node.left is None and node.right is None:
             l.append([node.char, count])
     return l
-
 
 def create_code(node):
     '''Returns an array (Python list) of Huffman codes. For each character, use the integer ASCII representation 
@@ -96,7 +91,6 @@ def create_code(node):
         n[index] = value
     return n
 
-
 def create_header(freqs):
     '''Input is the list of frequencies. Creates and returns a header for the output file
     Example: For the frequency list asscoaied with "aaabbbbcc, would return “97 3 98 4 99 2” '''
@@ -109,8 +103,6 @@ def create_header(freqs):
 
     return " ".join(ret)
 
-
-
 def huffman_encode(in_file, out_file):
     '''Takes inout file name and output file name as parameters - both files will have .txt extensions
     Uses the Huffman coding process on the text from the input file and writes encoded text to output file
@@ -121,12 +113,10 @@ def huffman_encode(in_file, out_file):
 
     if not os.path.exists(in_file):
         raise FileNotFoundError
-
     count = 0
     freqlist = cnt_freq(in_file)
     for i in freqlist:
         count += i
-
     if count == 0:
         e = open(out_file, 'w')
         e.close()
@@ -157,4 +147,54 @@ def huffman_encode(in_file, out_file):
         rowling.write_code(ret)
         rowling.close()
 
-#huffman_encode('empty_file.txt', 'empty_out.txt')
+def huffman_decode(encoded_file, decoded_file):
+    if not os.path.exists(encoded_file):
+        raise FileNotFoundError
+    ret = open(decoded_file, "w")
+    codes = ''
+    reader = HuffmanBitReader(encoded_file)
+    list_of_freqs = reader.read_str()
+    if len(list_of_freqs) == 0:
+        ret.close()
+        reader.close()
+        return
+    freq_list = parse_string(list_of_freqs)
+    root = create_huff_tree(freq_list)
+
+    try:
+        while True:
+            if reader.read_bit():
+                codes += '1'
+            else:
+                codes += '0'
+    except:
+        chars = ''
+
+    node = root
+    for i in codes:
+        if not node.left and not node.right:
+            chars += chr(node.char)
+            node = root  # reset tree back to root
+        if (i == '0'):
+            node = node.left
+        else:
+            node = node.right
+
+    #ret.write("{0}".format(list_of_freqs))
+    ret.write(chars)
+    ret.close()
+    reader.close()
+
+def parse_string(header_string):
+    ret = [0] * 256
+    l = header_string.split()
+    times = len(l)
+    for i in range(0, times, 2):
+        ascii_loc = int(l[i])
+        freq = int(l[i + 1])
+        ret[ascii_loc] = freq
+    return ret
+
+huffman_decode("test_out_compressed.txt", "output.txt")
+
+huffman_encode("test.txt", "test_out.txt")
