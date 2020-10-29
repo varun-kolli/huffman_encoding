@@ -30,6 +30,7 @@ class HuffmanBitReader:
             self.byte = self.read_byte()
             self.mask = 1 << 7
         bit = self.byte & self.mask
+
         self.mask = self.mask >> 1
         if bit == 0:
             return False

@@ -82,7 +82,9 @@ class TestList(unittest.TestCase):
     def test_dnex(self):
         with self.assertRaises(FileNotFoundError):
             huffman_encode("doesnotexist.txt", "doesnt_matter.txt")
-
+    def test_dnex_01(self):
+        with self.assertRaises(FileNotFoundError):
+            huffman_decode("doesnotexist.txt", "doesnt_matter.txt")
 
     def test_empty_textfilex(self):
         huffman_encode("empty_file.txt", "empty_out.txt")
@@ -91,6 +93,18 @@ class TestList(unittest.TestCase):
         self.assertEqual(err, 0)
         err = subprocess.call("diff -wb empty_out_compressed.txt empty_file.txt", shell = True)
         self.assertEqual(err, 0)
+
+    def test_decode(self):
+        huffman_decode("file1_out_compressed.txt", "output.txt")
+        err = subprocess.call("diff -wb output.txt file1.txt", shell=True)
+        self.assertEqual(err, 0)
+
+    def test_decode_01(self):
+        huffman_decode("empty_out_compressed.txt", "output.txt")
+        err = subprocess.call("diff -wb output.txt empty_file.txt", shell=True)
+        self.assertEqual(err, 0)
+
+
 
 if __name__ == '__main__': 
    unittest.main()
