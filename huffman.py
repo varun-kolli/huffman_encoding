@@ -158,7 +158,7 @@ def huffman_decode(encoded_file, decoded_file):
         ret.close()
         reader.close()
         return
-    freq_list = parse_string(list_of_freqs)
+    freq_list = parse_header(list_of_freqs)
     root = create_huff_tree(freq_list)
 
     try:
@@ -185,7 +185,7 @@ def huffman_decode(encoded_file, decoded_file):
     ret.close()
     reader.close()
 
-def parse_string(header_string):
+def parse_header(header_string):
     ret = [0] * 256
     l = header_string.split()
     times = len(l)
