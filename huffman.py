@@ -154,13 +154,24 @@ def huffman_decode(encoded_file, decoded_file):
     codes = ''
     reader = HuffmanBitReader(encoded_file)
     list_of_freqs = reader.read_str()
+    freq_list = parse_header(list_of_freqs)
+
     if len(list_of_freqs) == 0:
         ret.close()
         reader.close()
         return
-    freq_list = parse_header(list_of_freqs)
+    elif len(list_of_freqs.split()) == 2:
+        x = list_of_freqs.split()
+        ask = chr(int(x[0]))
+        freak = int(x[1])
+        y = ''
+        for i in range(freak):
+            y += ask
+        ret.write(y)
+        ret.close()
+        reader.close()
+        return
     root = create_huff_tree(freq_list)
-
     try:
         while True:
             if reader.read_bit():
@@ -169,7 +180,6 @@ def huffman_decode(encoded_file, decoded_file):
                 codes += '0'
     except:
         chars = ''
-
     node = root
     for i in codes:
         if not node.left and not node.right:
@@ -180,7 +190,6 @@ def huffman_decode(encoded_file, decoded_file):
         else:
             node = node.right
 
-    #ret.write("{0}".format(list_of_freqs))
     ret.write(chars)
     ret.close()
     reader.close()
@@ -195,3 +204,4 @@ def parse_header(header_string):
         ret[ascii_loc] = freq
     return ret
 
+huffman_decode("single_line_out_compressed.txt", "output.txt")

@@ -84,14 +84,24 @@ class TestList(unittest.TestCase):
         err = subprocess.call("diff -wb empty_out_compressed.txt empty_file.txt", shell=True)
         self.assertEqual(err, 0)
 
-    def test_decode(self):
+    def test_decode_01(self):
+        huffman_decode("empty_out_compressed.txt", "output.txt")
+        err = subprocess.call("diff -wb output.txt empty_file.txt", shell=True)
+        self.assertEqual(err, 0)
+
+        huffman_decode("single_line_out_compressed.txt", "output.txt")
+        err = subprocess.call("diff -wb output.txt single_line.txt", shell=True)
+        self.assertEqual(err, 0)
+
         huffman_decode("file1_compressed_soln.txt", "output.txt")
         err = subprocess.call("diff -wb output.txt file1.txt", shell=True)
         self.assertEqual(err, 0)
 
-    def test_decode_01(self):
-        huffman_decode("empty_file.txt", "output.txt")
-        err = subprocess.call("diff -wb output.txt empty_file.txt", shell=True)
+
+    def dec_single(self):
+
+        huffman_decode("single_line_out_compressed.txt", "output.txt")
+        err = subprocess.call("diff -wb output.txt single_line.txt", shell=True)
         self.assertEqual(err, 0)
 
     def test_01a_test_file1_parse_header(self):
@@ -114,16 +124,14 @@ class TestList(unittest.TestCase):
                     0, 0, 0]
         self.compare_freq_counts(parse_header(header), expected)
 
-    def test_01_test_file1_decode(self):
-        huffman_decode("file1_compressed_soln.txt", "file1_decoded.txt")
-        err = subprocess.call("diff -wb file1.txt file1_decoded.txt", shell=True)
-        self.assertEqual(err, 0)
 
     def compare_freq_counts(self, freq, exp):
         for i in range(256):
             stu = 'Frequency for ASCII ' + str(i) + ': ' + str(freq[i])
             ins = 'Frequency for ASCII ' + str(i) + ': ' + str(exp[i])
             self.assertEqual(stu, ins)
+
+
 
 
 if __name__ == '__main__':
