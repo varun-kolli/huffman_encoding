@@ -35,7 +35,7 @@ class HuffmanNode:
 
 
 def cnt_freq(filename):
-    '''Opens a text file with a given file name (passed as a string) and counts the 
+    '''Opens a text file with a given file name (passed as a string) and counts the
     frequency of occurrences of all the characters within that file'''
     l = [0] * 256
     f = open(filename, 'r')
@@ -79,7 +79,7 @@ def inorder_helper(node, l, count):
     return l
 
 def create_code(node):
-    '''Returns an array (Python list) of Huffman codes. For each character, use the integer ASCII representation 
+    '''Returns an array (Python list) of Huffman codes. For each character, use the integer ASCII representation
     as the index into the arrary, with the resulting Huffman code for that character stored at that location'''
     n = [""] * 256
     l = []
@@ -107,7 +107,7 @@ def huffman_encode(in_file, out_file):
     '''Takes inout file name and output file name as parameters - both files will have .txt extensions
     Uses the Huffman coding process on the text from the input file and writes encoded text to output file
     Also creates a second output file which adds _compressed before the .txt extension to the name of the file.
-    This second file is actually compressed by writing individual 0 and 1 bits to the file using the utility methods 
+    This second file is actually compressed by writing individual 0 and 1 bits to the file using the utility methods
     provided in the huffman_bits_io module to write both the header and bits.
     Take not of special cases - empty file and file with only one unique character'''
 
@@ -195,6 +195,3 @@ def parse_header(header_string):
         ret[ascii_loc] = freq
     return ret
 
-huffman_decode("test_out_compressed.txt", "output.txt")
-
-huffman_encode("test.txt", "test_out.txt")
