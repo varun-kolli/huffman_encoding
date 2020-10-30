@@ -85,12 +85,12 @@ class TestList(unittest.TestCase):
         self.assertEqual(err, 0)
 
     def test_decode(self):
-        huffman_decode("file1_out_compressed.txt", "output.txt")
+        huffman_decode("file1_compressed_soln.txt", "output.txt")
         err = subprocess.call("diff -wb output.txt file1.txt", shell=True)
         self.assertEqual(err, 0)
 
     def test_decode_01(self):
-        huffman_decode("empty_out_compressed.txt", "output.txt")
+        huffman_decode("empty_file.txt", "output.txt")
         err = subprocess.call("diff -wb output.txt empty_file.txt", shell=True)
         self.assertEqual(err, 0)
 
