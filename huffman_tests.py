@@ -97,13 +97,6 @@ class TestList(unittest.TestCase):
         err = subprocess.call("diff -wb output.txt file1.txt", shell=True)
         self.assertEqual(err, 0)
 
-
-    def dec_single(self):
-
-        huffman_decode("single_line_out_compressed.txt", "output.txt")
-        err = subprocess.call("diff -wb output.txt single_line.txt", shell=True)
-        self.assertEqual(err, 0)
-
     def test_01a_test_file1_parse_header(self):
         f = open('file1_compressed_soln.txt', 'rb')
         header = f.readline()
@@ -130,8 +123,6 @@ class TestList(unittest.TestCase):
             stu = 'Frequency for ASCII ' + str(i) + ': ' + str(freq[i])
             ins = 'Frequency for ASCII ' + str(i) + ': ' + str(exp[i])
             self.assertEqual(stu, ins)
-
-
 
 
 if __name__ == '__main__':

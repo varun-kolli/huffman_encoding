@@ -189,7 +189,6 @@ def huffman_decode(encoded_file, decoded_file):
             node = node.left
         else:
             node = node.right
-
     ret.write(chars)
     ret.close()
     reader.close()
@@ -204,4 +203,3 @@ def parse_header(header_string):
         ret[ascii_loc] = freq
     return ret
 
-huffman_decode("single_line_out_compressed.txt", "output.txt")
